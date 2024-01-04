@@ -1,7 +1,17 @@
 // Middleware for handling auth
-function adminMiddleware(req, res, next) {
-    // Implement admin auth logic
-    // You need to check the headers and validate the admin from the admin DB. Check readme for the exact headers to be expected
+const {Admin} = require("../db");
+
+async function adminMiddleware(req, res, next) {
+    const username = req.headers.username;
+    const password = req.headers.password;
+
+    const admin = await Admin.findOne({ username });
+    if (!admin || password !== admin.password) {
+        res.json({
+            msg: 'Admin credentials are not valid'
+        })
+    }
+    next()
 }
 
 module.exports = adminMiddleware;

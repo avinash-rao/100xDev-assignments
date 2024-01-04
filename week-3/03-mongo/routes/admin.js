@@ -4,7 +4,16 @@ const router = Router();
 
 // Admin Routes
 router.post('/signup', (req, res) => {
-    // Implement admin signup logic
+    username = req.body.username;
+    password = req.body.password;
+
+    const admin = Admin.findOne({ username });
+    if (admin) {
+        res.status(409).json({
+            msg: 'Username already taken'
+        })
+    }
+
 });
 
 router.post('/courses', adminMiddleware, (req, res) => {
